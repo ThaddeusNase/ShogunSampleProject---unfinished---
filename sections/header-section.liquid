@@ -1,0 +1,63 @@
+<!-- NOTE: file conventionen beachten! -> zB header.liquid wird nicht erkannt -> stattedessen: header-section.liquid -->
+
+
+
+<header>
+  <div class="hamburger-menu">
+    <div class="hamburger-menu__topbar"></div>
+    <div class="hamburger-menu__bottombar"></div>
+  </div>
+  {% assign splittedBrandName = shop.name | split: " " %}
+
+  <h1 class="brand-name">
+    {% for singleWord in splittedBrandName %}
+      {{singleWord}} <br>
+    {% endfor %}
+  </h1>
+  
+  <div class="cart-image-container">
+    <a href="/cart">
+      <img src="{{ 'cart-outline.svg' | asset_url }}" alt="some alt" />
+    </a>
+  </div>  
+</header>
+
+
+
+
+<!-- {% for link in linklists.main-menu.links %}
+    {% assign child_list_handle = link.title | handleize %}
+    {% if linklists[child_list_handle].links != blank %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+      [{% for childlink in linklists[child_list_handle].links %}
+        <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+      {% endfor %}]
+    {% else %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endif %}
+  {% endfor %}
+
+
+  {% if shop.customer_accounts_enabled %}
+    {% if customer %}
+      <a href="/account">account</a>
+      {{ 'log out'  | customer_logout_link }}
+    {% else %}
+      {{ 'log in ' | customer_login_link }}
+      {{ 'register' | customer_register_link }}
+    {% endif %}
+  {% endif %} -->
+
+
+{% schema %}
+  {
+    "name": "Section nameee",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

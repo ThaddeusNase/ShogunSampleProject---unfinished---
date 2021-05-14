@@ -1,0 +1,156 @@
+<!-- TODO: hier "Home Page" implementieren  ("/") -->
+<!-- s. Boilerplate code unten eventuell löschen -->
+
+
+<div class="index-page-content">
+  {% for product in collections.main-products.products %}
+  <div class="index-page-product">
+    <a href="{{ product.url }}">
+      <div class="index-page-product__content">
+        <h1> {{ product.title | upcase }} </h1>
+        <div class="index-page-product__description">
+          {{ product.description }}
+        </div>
+        <div class="index-page-product__cta">
+          <div> Shop now </div>
+          <div class="arrow-image-container">
+            <img src="{{ 'arrow.svg' | asset_url }}" alt="arrow-image">
+          </div>
+        </div>
+      </div>
+      {% assign images = product.media | where: "media_type", "image" %}
+      {% assign imageSize = '1000x' %}
+      <div class="index-page-product-image-background" style="background-image: url('{{ images[0]image.src | product_img_url: {{imageSize}} }}');">
+      </div>
+      
+      
+      <!-- <div class="index-page-product__image-container">
+        {% assign images = product.media | where: "media_type", "image" %}
+          <img src="{{ images[0]image.src | product_img_url: '1000x' }}" alt="product-image">
+      </div> -->
+    </a>
+  </div>
+    
+{% endfor %}
+
+</div>
+
+
+
+
+
+
+
+<style> 
+  .index-page-product-image-background {
+    background-image: url("{{ images[0]image.src | product_img_url: '1000x' }}");
+  }
+
+  .brand-name {
+    position: absolute;
+    font-size: 5rem;
+    top: 25vh;
+    transform: translateX(calc(50vw - 50%));    /* MARK: best practice um ein position: absolute element zu centrieren? */
+    /* transform-origin: 50% 100%                  https://davidwalsh.name/parallax-scroll */
+  }
+</style>
+
+
+
+<script>
+  // TODO: irgendwie festellen, wann target.y value mit dem vom header kolidiert bzw wann taget wieder den selben y wert hat wie ohne position absolute
+  const target = document.querySelector(".brand-name")
+  const header = document.querySelector("header")
+
+  const headerRect = header.getBoundingClientRect()
+  const initialTargetRect = target.getBoundingClientRect()
+
+  // console.log("headerRect", headerRect);  
+
+  var targetIsLocked = false
+
+  window.addEventListener("scroll", function(e) {
+
+    const targetRect = target.getBoundingClientRect()
+
+    const offset = window.pageYOffset
+    const scrollRate = offset * - .7
+    const scaleRate = 130 / offset
+
+    // TODO: geht so leider nicht da wenn kleinerer (verticaler screen) -> andere offset ratio -> stattdessen ähnlich wie unten versuchen
+    // veruschen mit vh werten zu arbeiten -> auch in scrollRate und scaleRate!
+    // console.log("offset: ", offset);
+    // console.log("initialTargetRect: ", initialTargetRect);
+    // console.log("headerRect: ", headerRect);
+
+    // (offset < 506)
+      if (targetRect.y >= headerRect.height/2 - (targetRect.height/2)) {
+        target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
+          // to fix the scale bug!
+          if (offset < 450) {
+            target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
+        }
+        if (offset > 144 ) {
+          target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
+        }
+      }
+
+      if (offset < initialTargetRect.y + initialTargetRect.height) {
+        target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
+          // to fix the scale bug!
+          if (offset < 450) {
+            target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
+        }
+        if (offset > 144 ) {
+          target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
+        }
+
+      }
+  })
+
+
+
+  // if (targetRect.y >= headerRect.height/2 - (targetRect.height/2)) {
+  //       target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
+
+  //         // to fix the scale bug!
+  //         if (offset < 450) {
+  //           target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
+  //       }
+
+  //       if (offset > 144 ) {
+  //         target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
+  //       }
+  //     // TODO: if targRect.y <= headerRect.height/2 - (targetRect.height/2) { umgekeherte scroll/scale weerte bis initial.y erraiech  } 
+  //     // ab offset 506 ist targetRect.y >= headerRect.height/2 - (targetRect.height/2) == false d.h .brand-name in seiner ursprünglichen position
+
+
+  //     // if offset == 250 bzw initialTargetRect && initialTargetRect.y != target.y -> dann wieder runter scrollen
+  //     }
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% for product in collections.main.products limit:4 %}
+
+  <div>
+    <a href="{{ product.url | within: collection }}"> {{ product.title }}</a>
+    {{ product.price | money }}
+    {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+    <a href="{{ product.url | within: collection }}">
+      <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+    </a>
+  </div>
+{% endfor %} -->
+

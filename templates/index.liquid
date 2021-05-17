@@ -59,6 +59,9 @@
 
 <script>
   // TODO: irgendwie festellen, wann target.y value mit dem vom header kolidiert bzw wann taget wieder den selben y wert hat wie ohne position absolute
+
+  // Mit jQuery veruschen s.
+  // https://stackoverflow.com/questions/15123262/positionfixed-navigation-stop-at-end-of-specific-div-parallax-scrolling-jav
   const target = document.querySelector(".brand-name")
   const header = document.querySelector("header")
 
@@ -75,6 +78,9 @@
 
     const offset = window.pageYOffset
     const scrollRate = offset * - .7
+
+
+    // TODO scale rate nicht durch offset teilen sondern durch einen Iterator (außerhalb vom scroll eventhandler definieren -> und dann extra functino schreiben die diesen multiplikator bei unterschiedlichen offsets / window heights verändert)
     const scaleRate = 130 / offset
 
     // TODO: geht so leider nicht da wenn kleinerer (verticaler screen) -> andere offset ratio -> stattdessen ähnlich wie unten versuchen
@@ -94,6 +100,10 @@
           target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
         }
       }
+
+
+
+
 
       if (offset < initialTargetRect.y + initialTargetRect.height) {
         target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`

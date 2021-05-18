@@ -65,7 +65,7 @@ header {
     position: relative;
     height: 60vh;
     text-align: center;
-    margin-bottom: 300px
+    margin-bottom: 300px;
 }
 
 .index-page-product__content {
@@ -73,11 +73,14 @@ header {
     display: inline-block;
     max-width: 480px;
     position: absolute;
-    // top: 100px;
+    top: 70px;
     z-index: 100;
     color: white;
     margin-left: 70px;
     text-align: left !important; 
+    opacity: 0;
+    transition: opacity 1.5s ease-out, transform 1.5s ease-out      // eventuell noch mit delay
+
 }
 
 .index-page-product__content h1 {
@@ -134,8 +137,21 @@ header {
 }
 
 
+.product-content-show {
+    transform: translateY(-70px);
+    opacity: 1;
+}
 
 
+@keyframes fadeIn {
+    from {
+        transform: translateY(0px);
+        opacity: 0;
+    } to {
+        transform: translateY(-70px);
+        opacity: 1;
+    }
+  
 
 
 

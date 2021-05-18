@@ -57,6 +57,47 @@
 
 
 
+<!-- product scroll script -->
+<script>
+  const productSections = document.querySelectorAll(".index-page-product")
+
+  const options = {
+    // root: null   --> viewport (default)
+    root: null,
+    threshold: 0.5,    // 0 => 1; value=1 ==> 100% des productSection muss auf der seite sein (seite=viewport?), value=0.25 ==> 25% sobald 25% des product-div auf der seite zu sehen ist -> IntersectionObserver wird executed (via observe())
+    rootMargin: ""    // zb "-150px" -> s. wann text eingeblendet werden soll
+  }
+  const observer  = new IntersectionObserver(
+    (entries, observe) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log(entry);
+          // target ==  single productSection
+          // target.children[0] == a tag
+          // target.childer[0].children[0] == content div
+          entry.target.children[0].children[0].classList.add("product-content-show")  
+        } 
+        // TODO: removde class hat den effect, dass es wieder rausanimiert -> nicht gewollt -> soll,wenn klasse hinzugefügt wurde im *post-animated-state* bleiben SOLANGE porduct section komplett vom view port weg ist
+        else if (!entry.isIntersecting) {
+          entry.target.children[0].children[0].classList.remove("product-content-show") 
+        }
+        console.log(entry);
+      })
+    },options)
+
+
+  productSections.forEach(
+    (product) => {
+      observer.observe(product)
+    }
+  )
+
+</script>
+
+
+
+
+<!-- Header Scroll script -->
 <script>
   // TODO: irgendwie festellen, wann target.y value mit dem vom header kolidiert bzw wann taget wieder den selben y wert hat wie ohne position absolute
 

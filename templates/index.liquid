@@ -78,6 +78,7 @@
           entry.target.children[0].children[0].classList.add("product-content-show")  
         } 
         // TODO: removde class hat den effect, dass es wieder rausanimiert -> nicht gewollt -> soll,wenn klasse hinzugefügt wurde im *post-animated-state* bleiben SOLANGE porduct section komplett vom view port weg ist
+        // classe erst entfernen wenn entry.target.entry.isIntersecting!! nicht entry.isINtersecting!!!""
         else if (!entry.isIntersecting) {
           entry.target.children[0].children[0].classList.remove("product-content-show") 
         }

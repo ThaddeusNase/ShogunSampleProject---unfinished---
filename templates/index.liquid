@@ -19,15 +19,8 @@
         </div>
       </div>
       {% assign images = product.media | where: "media_type", "image" %}
-      {% assign imageSize = '1000x' %}
-      <div class="index-page-product-image-background" style="background-image: url('{{ images[0]image.src | product_img_url: {{imageSize}} }}');">
-      </div>
-      
-      
-      <!-- <div class="index-page-product__image-container">
-        {% assign images = product.media | where: "media_type", "image" %}
-          <img src="{{ images[0]image.src | product_img_url: '1000x' }}" alt="product-image">
-      </div> -->
+      {% assign mainImageSrc = images[0].image.src | product_img_url: '1000x' %}
+      <div class="index-page-product-image-background" data-lazy-src="{{ mainImageSrc }}">  </div>
     </a>
   </div>
     
@@ -41,11 +34,7 @@
 
 
 
-<style> 
-  .index-page-product-image-background {
-    background-image: url("{{ images[0]image.src | product_img_url: '1000x' }}");
-  }
-
+<style>
   .brand-name {
     position: absolute;
     font-size: 5rem;
@@ -65,49 +54,36 @@
   const productSectionOptions = {
     // root: null   --> viewport (default)
     root: null,
-    threshold: 0.5,
+    threshold: 0,
     rootMargin: "0px 0px 0px 0px"    // zb "-150px" -> s. wann text eingeblendet werden soll
   }
-
-  const productContentOptions = {
-    root: null,
-    threshold: 0,
-    rootMargin: "0px"              // TODO: rootMargin == height von contetn div + transformY (==70px) -> jetzt durchschnitt gehardcoded == 400px
-  }
-
 
 
   const productSectionObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
+        // target ==  single productSection
+        // target.children[0] == a tag
+        // target.children[0].children[0] == content div
+        // target.children[0].children[1] ==  div
 
-        // TODO: hier lazyloading der images implementieren: https://www.youtube.com/watch?v=aUjBvuUdkhgr
+        const product = entry.target
+        const bgImgContainer = entry.target.children[0].children[1]   // class="index-page-product-image-background
+        const bgImgPath = bgImgContainer.dataset.lazySrc
 
+        // lazyloading der images: https://www.youtube.com/watch?v=aUjBvuUdkhgr
         if (entry.isIntersecting) {
-          // target ==  single productSection
-          // target.children[0] == a tag
-          // target.childer[0].children[0] == content div
-          entry.target.children[0].children[0].classList.add("product-content-show")  
+          console.log("is Interseting");
+          // console.log(entry);
+          bgImgContainer.style.backgroundImage = `url(${bgImgPath})`
+          product.children[0].children[0].classList.add("product-content-show")  
         } 
         else if (!entry.isIntersecting) {
-          // entry.target.children[0].children[0].style.display = "none"
-          // entry.target.children[0].children[0].classList.remove("product-content-show") 
+          product.children[0].children[0].classList.remove("product-content-show")
           // observer.unobserve(entry.target)
         }
       })
     },productSectionOptions)
-
-
-  const productContentObserver = new IntersectionObserver(
-    function(entries, observe) {
-      entries.forEach((entry) => {
-        if(!entry.isIntersecting) {
-          // entry.target.style.opacity = "0"
-          entry.target.classList.remove("product-content-show")
-        }
-      })
-    }, productContentOptions
-  )
 
 
   productSections.forEach(
@@ -116,11 +92,7 @@
     }
   )
 
-  productContents.forEach(
-    (content) => {
-      productContentObserver.observe(content)
-    }
-  )
+  
 
 
 

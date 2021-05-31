@@ -78,6 +78,7 @@
           // observer.unobserve(entry.target) -> wann aufrufen?!
         } 
         else if (!entry.isIntersecting) {
+          // TODO: Wenn product.title mehr als eine zeile einnimmt, dann funktioniert der display fix nicht mehr wie gewollt
           product.children[0].children[0].classList.remove("product-content-show")
           // observer.unobserve(entry.target) -> wann aufrufen?!
         }

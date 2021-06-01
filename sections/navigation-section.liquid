@@ -1,0 +1,17 @@
+<section class="navigation-menu">
+    <div class="header">
+        <div class="cancel-btn">
+            <div class="mdiv">
+                <div class="md"></div>
+              </div>
+        </div>
+        <ul class="nav-list">
+            {% for link in linklists.main-menu.links %}
+                <li class="nav-list__item">
+                    <a href="{{ link.url }}"> {{ link.title | downcase }} </a>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</section>

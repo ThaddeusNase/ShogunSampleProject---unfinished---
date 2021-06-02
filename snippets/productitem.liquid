@@ -1,0 +1,12 @@
+<div class="product-item">
+    <!-- product.images[0] == main image; first image -->
+    <a href="{{ product.url }}">
+        {% assign imgSize = 'large' %}
+        <!-- NOTE: wichtig, dass nur das background-image propertie defniniert wird und nicht der shortcut background, da diesert eventuell zuvor in scc definierter style rules überschreibt  -->
+        <div class="product-img-container" style="background-image: url('{{ product.images[0].src | product_img_url: imgSize }}')"></div>
+        <h1 class="product-title"> {{ product.title }}</h1>
+    </a>
+    <!-- TODO: {{ product.description }} -->
+</div>
+
+

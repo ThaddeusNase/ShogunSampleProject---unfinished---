@@ -1,7 +1,9 @@
 // put your styles here
 
 body {
-    background-color: #1a212a ;
+    background-color: #1a212a;
+    // overflow: hidden; // nötig um scrollbar zu "verstecken", sobald navigation-section getoggled/displayed wird
+    color: white;
 }
 
 main {
@@ -122,9 +124,54 @@ header {
       margin-right: 40px;
   }
 
-  .nav-list__item a {
+  .nav-list__item a,
+  .navigation-menu .product-carousel .product-item a  {
       color: white;
   }
+
+  .product-carousel {
+    // TODO: eventuell height: calc(100vh - 80px); width: 100vw festlegen 
+    display: flex;
+    margin-top: 40px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .product-item {
+    // display: inline-block; // nicht nötig da product-carousel == flex container
+    min-width: 24%;     // min-width statt normales width property, damit overflow x -> ansonsten würde html/flexbox die jweiligen elemente zu verkleinern, sodass sie alle in einer line passen (width wäre dann nicht mehr 24%)
+    height: 80vh;
+    // TODO: max-height
+    padding: 30px;
+  }
+
+
+  .product-img-container {
+      // NOTE: background-image wird in productitem.liquid gestzt(via style prooperty ) (da liquid-url data gebraucht wird)
+      width: 100%;
+      height: 80%;
+      overflow: hidden;
+      border-radius: 10px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      transition: transform 300ms ease-out, box-shadow 300ms ease-out;
+      position: relative;
+      z-index: 2;
+  }
+
+  .product-carousel .product-title {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      margin-top: 16px;
+      transition: transform 300ms ease-out;
+  }
+
+
+
+
+
 
 
 

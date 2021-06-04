@@ -8,6 +8,10 @@ const menuBtn = document.querySelector(".hamburger-menu")
 
 const menuCancelBtn = document.querySelector(".cancel-btn")
 const navigationMenu = document.querySelector(".navigation-menu")
+const leftCarouselBtn = document.querySelector(".carousel-btn.left")
+const leftBtnPath = document.querySelector(".left.carousel-btn-svg-path")
+const rigthCarouselBtn = document.querySelector(".carousel-btn.right")
+const rightBtnPath = document.querySelector(".right.carousel-btn-svg-path")
 
 const productCarousel = document.querySelector(".product-carousel")
 const productCarouselChildren = Array.prototype.slice.call(productCarousel.children)
@@ -25,6 +29,7 @@ menuCancelBtn.addEventListener("click", function() {
 })
 
 
+// ----- Hover effect product-carousel -----
 productCarouselChildren.forEach(productItem => {
     const aTag = productItem.children[0]
     const productImg = aTag.children[0]
@@ -34,16 +39,72 @@ productCarouselChildren.forEach(productItem => {
         productTitle.style.transform = 'translateY(-15px)'
         productImg.style.transform = "rotate(-3deg)"
         productImg.style.boxShadow = "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px"
-        // productImg.style.boxShadow = "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px"
-        
+        // productImg.style.boxShadow = "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px"  
     })
     productItem.addEventListener("mouseleave", function() {
         productTitle.style.transform = "translateY(0px)"
         productImg.style.transform = "rotate(0deg)"
         productImg.style.boxShadow = "none" 
     })
-
 }) 
+
+
+
+
+// ----- product-carousel btn  -----
+let products = document.querySelectorAll('.product-item')
+let r = 0;  // pultyplyer
+// mobile_view	
+
+function moveRight() {
+    if (r >= products.length - 1) {
+        disableCarouselBtn(rigthCarouselBtn, rightBtnPath)
+        return
+    } else {
+        enableCarouselBtn(rigthCarouselBtn, rightBtnPath)
+        r = products.length == 1 ? 0 : r+=1
+        products.forEach((product) => {
+            product.style.transform = `translateX(calc(-100% * ${r}))`;
+        })
+    }
+    if (r <= 1 ) enableCarouselBtn(leftCarouselBtn, leftBtnPath)
+    if (r == products.length - 1) disableCarouselBtn(rigthCarouselBtn, rightBtnPath)
+}
+
+
+function moveLeft() {
+    console.log(r);
+    if (r == 0) {
+        leftBtnPath.style.stroke = disableCarouselBtn(leftCarouselBtn, leftBtnPath)
+        return 
+    } else {
+        leftBtnPath.style.stroke = "white"
+        r = products.length == 1 ? 0 : r-=1
+        products.forEach((product) => {
+            product.style.transform = `translateX(calc(-100% * ${r}))`;
+        })
+    }
+    if (r == 0) disableCarouselBtn(leftCarouselBtn, leftBtnPath)
+    if (r != 0) enableCarouselBtn(rigthCarouselBtn, rightBtnPath)
+}
+
+
+// ---- btn Helper functions
+function disableCarouselBtn(btn, btnSvgPath) {
+    btnSvgPath.style.stroke = "rgba(149, 149, 149, 0.28)"
+    btn.classList.add("btnZoom")
+    btn.style.cursor = "default"
+}
+
+function enableCarouselBtn(btn, btnSvgPath) {
+    btnSvgPath.style.stroke = "white"
+    btn.style.cursor = "pointer"
+    btn.classList.remove("btnZoom")
+}
+
+leftCarouselBtn.addEventListener("click", moveLeft)
+rigthCarouselBtn.addEventListener("click", moveRight)
+
 
 
 

@@ -129,20 +129,54 @@ header {
       color: white;
   }
 
+  
+  .carousel-buttons {
+      margin-left: 70px;
+      margin-top: 40px;
+  }
+
+
+  .carousel-btn {
+      display: inline-block;
+      height: 30px;
+      width: 30px;
+      margin-right: 40px;
+      cursor: pointer;
+      transition: transform 160ms ease-out
+  }
+
+  // default value für linken carousel button (da caraousel ja ganz links startet)
+  .carousel-btn.left {
+      cursor: initial;
+  }
+
+  .left.carousel-btn-svg-path {
+      stroke: rgba(149, 149, 149, 0.28)
+  }
+ 
+
+  .carousel-btn:hover {
+      transform: scale(1.4);
+  }
+  
+
   .product-carousel {
     // TODO: eventuell height: calc(100vh - 80px); width: 100vw festlegen 
     display: flex;
-    margin-top: 40px;
+    // margin-top: 5px;
     flex-wrap: nowrap;
     overflow-x: auto;
+    margin-left: 40px;
   }
 
   .product-item {
     // display: inline-block; // nicht nötig da product-carousel == flex container
     min-width: 24%;     // min-width statt normales width property, damit overflow x -> ansonsten würde html/flexbox die jweiligen elemente zu verkleinern, sodass sie alle in einer line passen (width wäre dann nicht mehr 24%)
-    height: 80vh;
+    height: 75vh;
     // TODO: max-height
     padding: 30px;
+    position: relative;
+    transition: transform 250ms ease-out;
   }
 
 

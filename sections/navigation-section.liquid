@@ -13,8 +13,17 @@
             {% endfor %}
         </ul>
     </div>
+    
+    <!-- TODO: verschlechtert es die performance, wenn    -->
+    <div class="carousel-buttons">
+        <div class="carousel-btn left">
+            <svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Chevron Back</title><path class="left carousel-btn-svg-path" fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M328 112L184 256l144 144'/></svg>
+        </div>
+        <div class="carousel-btn right">
+            <svg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'><title>Chevron Forward</title><path class="right carousel-btn-svg-path" fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M184 112l144 144-144 144'/></svg>
+        </div>
+    </div>
     <section class="product-carousel">
-
         <!-- { for product in all_products }  geht nich tda all_products ein dictionary ist und kein array! 
         ... daher all_prodcuts via collections.main-products.products (collection muss extra angelegt werden!) -->
         {% for product in collections.main-products.products %}

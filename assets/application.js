@@ -73,7 +73,6 @@ function moveRight() {
 
 
 function moveLeft() {
-    console.log(r);
     if (r == 0) {
         leftBtnPath.style.stroke = disableCarouselBtn(leftCarouselBtn, leftBtnPath)
         return 
@@ -101,6 +100,7 @@ function enableCarouselBtn(btn, btnSvgPath) {
     btn.style.cursor = "pointer"
     btn.classList.remove("btnZoom")
 }
+
 
 leftCarouselBtn.addEventListener("click", moveLeft)
 rigthCarouselBtn.addEventListener("click", moveRight)

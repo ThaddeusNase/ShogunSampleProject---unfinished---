@@ -117,82 +117,23 @@
 
   // Mit jQuery veruschen s.
   // https://stackoverflow.com/questions/15123262/positionfixed-navigation-stop-at-end-of-specific-div-parallax-scrolling-jav
-  const target = document.querySelector(".brand-name")
+  const brandName = document.querySelector(".brand-name")
   const header = document.querySelector("header")
-  // const productSections = document.querySelectorAll(".index-page-product")
 
-  const headerRect = header.getBoundingClientRect()
-  const initialTargetRect = target.getBoundingClientRect()
-
-  // console.log("headerRect", headerRect);  
-
-  var targetIsLocked = false
-
-  window.addEventListener("scroll", function(e) { 
-
-    const targetRect = target.getBoundingClientRect()
-
-    const offset = window.pageYOffset
-    const scrollRate = offset * - .7
-
-
-    // TODO scale rate nicht durch offset teilen sondern durch einen Iterator (außerhalb vom scroll eventhandler definieren -> und dann extra functino schreiben die diesen multiplikator bei unterschiedlichen offsets / window heights verändert)
-    const scaleRate = 130 / offset
-
-    // TODO: geht so leider nicht da wenn kleinerer (verticaler screen) -> andere offset ratio -> stattdessen ähnlich wie unten versuchen
-    // veruschen mit vh werten zu arbeiten -> auch in scrollRate und scaleRate!
-    // console.log("offset: ", offset);
-    // console.log("initialTargetRect: ", initialTargetRect);
-    // console.log("headerRect: ", headerRect);
-
-    // (offset < 506)
-      if (targetRect.y >= headerRect.height/2 - (targetRect.height/2)) {
-        target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
-          // to fix the scale bug!
-          if (offset < 450) {
-            target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
-        }
-        if (offset > 144 ) {
-          target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
-        }
-      }
-
-
-
-
-
-      if (offset < initialTargetRect.y + initialTargetRect.height) {
-        target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
-          // to fix the scale bug!
-          if (offset < 450) {
-            target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
-        }
-        if (offset > 144 ) {
-          target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
-        }
-
-      }
+  const controller = new ScrollMagic.Controller()
+  const headerTl = new TimelineMax()
+  headerTl.to(".brand-name", 1, {fontSize: 20, ease: Power0.easeNone })
+  headerTl.to(".brand-name", 1, {top: 0, ease: Power0.easeNone}, 0)
+  
+  const headerTitleScene = new ScrollMagic.Scene({
+    //triggerElement: "",      muss hier nicht definiert sein, da ja von anfang an animiert werden soll
+    triggerHook: 0,
+    duration: "50%"
   })
+    .addTo(controller)
+    .addIndicators()
+    .setTween(headerTl)
 
-
-
-  // if (targetRect.y >= headerRect.height/2 - (targetRect.height/2)) {
-  //       target.style.transform = `translate3d(calc(50vw - 50%), ${scrollRate}px,0)`
-
-  //         // to fix the scale bug!
-  //         if (offset < 450) {
-  //           target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0))` //  transformX(calc(50vw - 50%))
-  //       }
-
-  //       if (offset > 144 ) {
-  //         target.style.transform = `translate3d(calc(50vw - 50%),${scrollRate}px,0) scale(${scaleRate})` //  transformX(calc(50vw - 50%))
-  //       }
-  //     // TODO: if targRect.y <= headerRect.height/2 - (targetRect.height/2) { umgekeherte scroll/scale weerte bis initial.y erraiech  } 
-  //     // ab offset 506 ist targetRect.y >= headerRect.height/2 - (targetRect.height/2) == false d.h .brand-name in seiner ursprünglichen position
-
-
-  //     // if offset == 250 bzw initialTargetRect && initialTargetRect.y != target.y -> dann wieder runter scrollen
-  //     }
 
 
 </script>

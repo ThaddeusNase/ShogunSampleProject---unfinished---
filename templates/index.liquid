@@ -20,7 +20,10 @@
       </div>
       {% assign images = product.media | where: "media_type", "image" %}
       {% assign mainImageSrc = images[0].image.src | product_img_url: '1000x' %}
-      <div class="index-page-product-image-background" data-lazy-src="{{ mainImageSrc }}">  </div>
+      <div class="index-page-product-image-container">
+        <div class="index-page-product-image-background" data-lazy-src="{{ mainImageSrc }}"> </div>
+      </div>
+      
     </a>
   </div>
 {% endfor %}
@@ -39,7 +42,6 @@
     font-size: 5rem;
     top: 25vh;
     transform: translateX(calc(50vw - 50%));    /* MARK: best practice um ein position: absolute element zu centrieren? */
-    /* transform-origin: 50% 100%                  https://davidwalsh.name/parallax-scroll */
   }
 </style>
 
@@ -48,7 +50,6 @@
 <!-- product scroll script -->
 <script>
   const productSections = document.querySelectorAll(".index-page-product")
-  const productContents = document.querySelectorAll(".index-page-product__content")
 
   const productSectionOptions = {
     // root: null   --> viewport (default)
@@ -61,24 +62,18 @@
   const productSectionObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
-        // target ==  single productSection
-        // target.children[0] == a tag
-        // target.children[0].children[0] == content div
-        // target.children[0].children[1] ==  div
 
         const product = entry.target
         const bgImgContainer = entry.target.children[0].children[1]   // class="index-page-product-image-background
+        const imgBg = bgImgContainer.children[0]
 
         // lazyloading der images: https://www.youtube.com/watch?v=aUjBvuUdkhgr
         if (entry.isIntersecting) {
           console.log("is Interseting");
-          preloadImage(bgImgContainer) 
-          product.children[0].children[0].classList.add("product-content-show")
+          preloadImage(imgBg)
           // observer.unobserve(entry.target) -> wann aufrufen?!
         } 
         else if (!entry.isIntersecting) {
-          // TODO: Wenn product.title mehr als eine zeile einnimmt, dann funktioniert der display fix nicht mehr wie gewollt
-          product.children[0].children[0].classList.remove("product-content-show")
           // observer.unobserve(entry.target) -> wann aufrufen?!
         }
       })
@@ -101,22 +96,14 @@
       productSectionObserver.observe(product)
     }
   )
-
-  
-
-
-
 </script>
 
 
-
-
+<!-- TODO: permance script tag vs js file vs wie viele script tags: https://stackoverflow.com/questions/4396849/does-the-script-tag-position-in-html-affects-performance-of-the-webpage -->
+<!-- TODO: performance: transforms besser als position properties!!! - eventuell mehr bugs  -->
+<!-- s. https://github.com/janpaepke/ScrollMagic/issues/414 -->
 <!-- Header Scroll script -->
 <script>
-  // TODO: irgendwie festellen, wann target.y value mit dem vom header kolidiert bzw wann taget wieder den selben y wert hat wie ohne position absolute
-
-  // Mit jQuery veruschen s.
-  // https://stackoverflow.com/questions/15123262/positionfixed-navigation-stop-at-end-of-specific-div-parallax-scrolling-jav
   const brandName = document.querySelector(".brand-name")
   const header = document.querySelector("header")
 
@@ -131,8 +118,47 @@
     duration: "50%"
   })
     .addTo(controller)
-    .addIndicators()
+    // .addIndicators()
     .setTween(headerTl)
+
+
+
+  //---- product-image/product (fade&scale)Animation ----
+  // TODO: s. lazyloading via INtersection Observer -> alles in einem script tag!!
+  const productContents = document.querySelectorAll(".index-page-product__content")
+  const productBackgrounds = document.querySelectorAll(".index-page-product-image-background")
+
+  productSections.forEach((product) => {
+    // TODO: children/indexe refactoren besser/übersichtlicher? s. jQuery -> find("index-page-product-image-background")
+    const productContent =  product.children[0].children[0]
+    const productBgContainer = product.children[0].children[1]
+    const productImgBg = productBgContainer.children[0]
+    productAnimation(productContent, productImgBg)
+  })
+
+
+  // ---- TODO: HTML STRUKTUR MIT BACKGROUND IMAGE NOCHMAL ÄNDERN: 
+  // STATTDESSEN: img-tag und img-container -> dann img-tag (children von img-container) mit scale vergrößern (overflow-hidden) 
+  function productAnimation(content, background) {
+    const productSlideTl = new TimelineMax()
+    productSlideTl.to(content, 1, {y: -70, autoAlpha: 1, ease: Power0.easeNone}, 0)
+    productSlideTl.from(background, 1, {scale: 1.4, ease: Power0.easeNone}, 0)        // WICHTIG: .from tween statt  .to!!! -> sonst wird background-image runter gescalet/kleiner, aber füllt dann nicht mehr den container aus
+
+    let productScene = new ScrollMagic.Scene({
+      triggerElement: background,
+      triggerHook: 0.9,                 // s. magin: 90vh 
+      duration: "100%"
+    })
+      .setTween(productSlideTl)
+      .addTo(controller)
+      .addIndicators({
+        name: "productTrigger",
+        colorStart: "green",
+        colorEnd: "red"
+      })
+
+  }
+
 
 
 

@@ -2,7 +2,6 @@
 
 body {
     background-color: #1a212a;
-    // overflow: hidden; // nötig um scrollbar zu "verstecken", sobald navigation-section getoggled/displayed wird
     color: white;
 }
 
@@ -18,7 +17,6 @@ header {
     justify-content: space-between;
     left: 0;
     top: 0;
-    // background: rgb(114, 114, 114);
     height: 80px;
     width: 100vw;
 }
@@ -214,7 +212,6 @@ header {
 // --------------- index-page -----------------
 
 .index-page-content {
-    // transform: translateY(90vh);
     margin-top: 90vh
 }
 
@@ -227,7 +224,6 @@ header {
 }
 
 .index-page-product__content {
-    // TODO: position: zu relativ ändern ... muss irgendwie ÜBER dem product image container sein
     display: inline-block;
     max-width: 480px;
     position: absolute;
@@ -238,8 +234,6 @@ header {
     text-align: left !important; 
     opacity: 0;
     transition: all 1.5s ease-out;
-    // animation: opacity 1.5s ease-out, transform 1.5s ease-out      // eventuell noch mit delay
-
 }
 
 .index-page-product__content h1 {
@@ -270,52 +264,22 @@ header {
     transform: translateX(10px);
 }
 
-// .index-page-product__image-container {
-//     display: inline-block;
-//     height: 100%;
-//     width: 70vw;
-//     overflow: hidden;
-//     position: absolute;
-// }
+
+.index-page-product-image-container {
+    display: inline-block;
+    height: 100%;
+    width: 82vw;
+    overflow: hidden;
+    transform: rotateZ(-2deg);
+    max-width: 980px;
+}
 
 .index-page-product-image-background {
-    display: inline-block;
+    width: 100%;
     height: 100%;
-    // TODO: nochmal überarbeiten -> background image wdh sich, wenn es nicht mehr groß genug ist für index-page-product-image-background DIV 
-    width: 82vw;
-    max-width: 980px;
-    overflow: hidden;
-    position: relative;
     background-position: center;
-    transform: rotateZ(-2deg);
+    background-repeat: no-repeat;
 }
-
-.index-page-product__image-container img {
-    height: 100%;
-    transform: translateX(10%) scale(1.2);
-}
-
-
-.product-content-show {
-    transform: translateY(-70px);
-    opacity: 1;
-    display: inline-block;
-    // animation: fadeIn 2s ease-out;
-}
-
-
-@keyframes fadeIn {
-    from {
-        transform: translateY(0px);
-        opacity: 0;
-    } to {
-        transform: translateY(-70px);
-        opacity: 1;
-    }
-}
-  
-
-
 
 
 

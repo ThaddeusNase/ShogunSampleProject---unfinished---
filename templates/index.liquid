@@ -87,7 +87,7 @@
       // TODO: placeholder product image, mit der message, dass das original nicht laden konnte
       return 
     }
-    imgDiv.style.backgroundImage = `url(${bgImgPath})`
+    imgDiv.style.backgroundImage = `linear-gradient(150deg,rgba(0,0,0,.5) 10%,transparent 65%) ,url(${bgImgPath})`
   }
 
 
@@ -141,13 +141,13 @@
   // STATTDESSEN: img-tag und img-container -> dann img-tag (children von img-container) mit scale vergrößern (overflow-hidden) 
   function productAnimation(content, background) {
     const productSlideTl = new TimelineMax()
-    productSlideTl.to(content, 1, {y: -70, autoAlpha: 1, ease: Power0.easeNone}, 0)
-    productSlideTl.from(background, 1, {scale: 1.4, ease: Power0.easeNone}, 0)        // WICHTIG: .from tween statt  .to!!! -> sonst wird background-image runter gescalet/kleiner, aber füllt dann nicht mehr den container aus
+    productSlideTl.to(content, 0.6, {y: -140, autoAlpha: 1, ease: Power0.easeNone}, 0)
+    productSlideTl.from(background, 1, {scale: 1.3, ease: Power0.easeNone}, 0)        // WICHTIG: .from tween statt  .to!!! -> sonst wird background-image runter gescalet/kleiner, aber füllt dann nicht mehr den container aus
 
     let productScene = new ScrollMagic.Scene({
       triggerElement: background,
       triggerHook: 0.9,                 // s. magin: 90vh 
-      duration: "100%"
+      duration: "180%"
     })
       .setTween(productSlideTl)
       .addTo(controller)

@@ -102,7 +102,7 @@ header {
     margin-left: 12px;
     background-color: white;
     transform: rotate(45deg);
-    Z-index: 1;
+    z-index: 1;
   }
   
   .md {
@@ -190,6 +190,7 @@ header {
       transition: transform 300ms ease-out, box-shadow 300ms ease-out;
       position: relative;
       z-index: 2;
+    
   }
 
   .product-carousel .product-title {
@@ -227,13 +228,14 @@ header {
     display: inline-block;
     max-width: 480px;
     position: absolute;
-    top: 70px;
+    top: 40px;
     z-index: 100;
     color: white;
     margin-left: 70px;
     text-align: left !important; 
     opacity: 0;
-    transition: all 1.5s ease-out;
+    transition: opacity .5s ease-out;
+    text-shadow: 4px 4px 8px black
 }
 
 .index-page-product__content h1 {
@@ -272,13 +274,21 @@ header {
     overflow: hidden;
     transform: rotateZ(-2deg);
     max-width: 980px;
+    // TODO: linear-gradient als schatten des background images!!
+    // background: linear-gradient(35deg,rgba(0,0,0,.5) 10%,transparent 65%);
+    // position: relative;
+    // z-index: 1;
+    
 }
 
 .index-page-product-image-background {
+    position: relative;
+    z-index: 0;
     width: 100%;
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
+
 }
 
 

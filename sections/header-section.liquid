@@ -8,9 +8,11 @@
   {% assign splittedBrandName = shop.name | split: " " %}
 
   <h1 class="brand-name">
-    {% for singleWord in splittedBrandName %}
-      {{singleWord}} <br>
-    {% endfor %}
+    <a href="{{ shop.url }}">
+      {% for singleWord in splittedBrandName %}
+        {{singleWord}} <br>
+      {% endfor %}
+    </a>
   </h1>
   
   <div class="cart-image-container">

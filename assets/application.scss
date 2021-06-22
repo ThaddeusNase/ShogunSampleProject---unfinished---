@@ -36,6 +36,10 @@ header {
     font-size: 20px;
 }
 
+.brand-name > a {
+    color: inherit;
+}
+
 .hamburger-menu__topbar {
     width: 100%;
     height: 2px;

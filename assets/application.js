@@ -110,5 +110,30 @@ rigthCarouselBtn.addEventListener("click", moveRight)
 
 
 
+// --------- product-page image-selector background handeling ---------
+const imageSelectors = document.querySelectorAll(".image-selection-selector")
+const productPageBg = document.querySelector(".product-bg")
+
+// latestClickedSelector benötigt um border von aktivem selector item zu entfernen 
+let latestClickedSelector = imageSelectors[0]
+
+// Default background settings (wenn product-page zum ersteln mal aufgerufen wird)
+latestClickedSelector.classList.add("active-selector")
+productPageBg.style.backgroundImage = `url('${latestClickedSelector.dataset.bgurl}')`
+
+
+imageSelectors.forEach((imgSelector) => {
+    imgSelector.addEventListener("click", function() {
+        const bgUrl = imgSelector.dataset.bgurl
+        productPageBg.style.backgroundImage = `url('${bgUrl}')`
+        handleSwitchSelector(imgSelector)
+    })
+})
+
+function handleSwitchSelector(imgSelector) {
+    latestClickedSelector.classList.remove("active-selector")
+    latestClickedSelector = imgSelector
+    latestClickedSelector.classList.add("active-selector")
+}
 
 

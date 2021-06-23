@@ -139,6 +139,7 @@
 
   // ---- TODO: HTML STRUKTUR MIT BACKGROUND IMAGE NOCHMAL ÄNDERN: 
   // STATTDESSEN: img-tag und img-container -> dann img-tag (children von img-container) mit scale vergrößern (overflow-hidden) 
+  // TODO: content opacity erst zu einem späteren zeitpunkt erhöhen 
   function productAnimation(content, background) {
     const productSlideTl = new TimelineMax()
     productSlideTl.to(content, 0.6, {y: -140, autoAlpha: 1, ease: Power0.easeNone}, 0)
@@ -158,7 +159,6 @@
       })
 
   }
-
 
 
 

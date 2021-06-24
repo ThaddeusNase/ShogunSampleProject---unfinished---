@@ -302,18 +302,55 @@ header {
 
 // ------------ product-page ---------
 
+
+// TODO: content /children von product-bg soll nicht über header srollen!
+
 .product-bg {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;      /* TODO: höher als 100vh s. original website */
+    right: 0;
+    bottom: 0;
+    //  height: 100vh;      /* TODO: höher als 100vh s. original website */
     display: inline-block;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    padding: 100px 80px;
+    //  TODO: content und form ohne scrollmagic scrollable machen irgendwie mit overflow ?!?!
+    // s. https://stackoverflow.com/questions/27784727/how-to-make-child-div-scrollable-when-it-exceeds-parent-height
+    overflow-y: scroll;
     // TODO: background max-size einstellen, damit background image nicht so weird skaliert?!
     // z-index: 9;
+}
+
+.product-bg .product-content {
+    max-width: 500px;
+}
+
+.product-bg .product-title {
+    font-size: 4rem;
+    margin-bottom: 40px;
+    text-shadow: 4px 4px 8px #000;
+}
+
+.product-bg .product-price {
+    color: rgba(250, 250, 250, 0.856);
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.product-bg .product-description {
+    line-height: 1.8;
+    font-weight: lighter;
+    text-shadow: 4px 4px 8px #000;
+}
+
+.seperator {
+    height: 1px;
+    width: 500px;
+    background-color: hsla(0,0%,100%,.4);
+    margin-bottom: 40px;
 }
 
 
@@ -338,9 +375,69 @@ header {
     cursor: pointer;
 }
 
+
 .active-selector {
     border: 2px solid white;
 }
+
+
+
+
+// ----- product-add-to-cart-form -------
+
+// ----- product-variant selector ------
+.product-bg .variantContainer {
+    display: inline-block;
+}
+// select-wrapper für custom dropdown arrow
+.select-wrapper {
+    position: relative;
+  }
+
+.product-bg .productSelect {
+    -webkit-appearance: none;
+    appearance: none;
+    color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(43, 42, 42, 0.774);
+    padding: 10px 40px 10px 40px; 
+    border: none;
+    // text-align-last: center   // funktionier nur in chrome TODO: nochmal überarbeiten
+}
+
+.product-bg .productSelect:focus {
+    outline: none;
+}
+
+.product-bg .variantContainer label[for='productSelect'] {
+    display: block;
+    font-size: small;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+// ----- product-quantity selector -----
+.product-bg .quantityContainer {
+    display: inline-block;
+}
+
+.product-bg .quantityContainer label[for='quantitySelect'] {
+    display: block;
+    font-size: small;
+    margin-bottom: 10px;
+}
+
+.product-bg input[type="submit"] {
+    display: block;
+    cursor: pointer;
+    margin-top: 60px;
+}
+
+
+
+
 
 
 

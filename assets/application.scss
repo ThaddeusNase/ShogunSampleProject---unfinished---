@@ -399,7 +399,7 @@ header {
     appearance: none;
     color: rgba(255, 255, 255, 0.4);
     background-color: rgba(43, 42, 42, 0.774);
-    padding: 10px 40px 10px 40px; 
+    padding: 10px 10px 10px 40px; 
     border: none;
     // text-align-last: center   // funktionier nur in chrome TODO: nochmal überarbeiten
 }
@@ -423,11 +423,69 @@ header {
     display: inline-block;
 }
 
+
+
 .product-bg .quantityContainer label[for='quantitySelect'] {
     display: block;
     font-size: small;
     margin-bottom: 10px;
 }
+
+.product-bg .quantityContainer .quantitySelectContainer {
+    color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(43, 42, 42, 0.774);
+    padding: 5px 5px 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;             // top: 1px -> to properly align quantitySelectContainer & .productSelect toegther (bug because same height but horizontally-aligned differently)
+    top: 1px;
+    height: 35px;
+}
+
+.product-bg .quantityContainer .quantitySelectContainer .incrementProductQuantity, 
+.product-bg .quantityContainer .quantitySelectContainer .decrementProductQuantity {
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: larger;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.incrementProductQuantity:disabled,
+.decrementProductQuantity:disabled {
+    opacity: 0;
+    cursor: default !important;
+}
+
+.product-bg .quantityContainer .quantitySelectContainer .quantitySelect {
+    width: 100px;
+    color: rgba(255, 255, 255, 0.4);
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    // DISABLE arrow button
+}
+
+.product-bg .quantityContainer .quantitySelectContainer .quantitySelect:focus {
+    outline: none;
+}
+
+
+
+// default input:nunber arrows entfernen
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 
 .product-bg input[type="submit"] {
     display: block;
@@ -435,6 +493,28 @@ header {
     margin-top: 60px;
 }
 
+
+.add-to-chart-btn {
+    background-color: white;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    border: none;
+    font-size: large;
+    font-weight: bolder;
+    letter-spacing: 2px;
+    transition: transform 200ms ease-out ;
+}
+
+.add-to-chart-btn:hover {
+    background-color: rgb(27, 27, 27);
+    color: white;
+    transform: scale(1.16);
+}
+
+.add-to-chart-btn:disabled {
+    opacity: 0.4;
+} 
 
 
 

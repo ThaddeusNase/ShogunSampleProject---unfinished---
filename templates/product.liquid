@@ -42,8 +42,13 @@
         <div class="select-wrapper">
           <select name="id" class="productSelect" id="productSelect">
               {% for variant in product.variants %}
-                <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
-                  {{ variant.title }}
+                <option 
+                  data-variant-inventory="{{ variant.inventory_quantity }}" 
+                  {% if variant == product.selected_or_first_available_variant %} selected {% endif %} 
+                  {% if variant.available == blank %} disabled {% endif %} 
+                  value="{{ variant.id }}"
+                >
+                  {{ variant.title }} {% if variant.available == blank %} - sold out {% endif %}
                 </option>
               {% endfor %}    
           </select>
@@ -55,12 +60,13 @@
         <label for="quantitySelect">Quantity: </label>
         <div class="quantitySelectContainer">
           <button type="button" class="incrementProductQuantity">+</button>
-          <input id="quantitySelect" type="number" name="quantity" value="1" min="1" max="5">
-          <button type="button" class="decrementProductQuantity">-</button>
+          <!-- TODO: evenetuell noch mit max=10 ... dann aber auch handleIncrementBtn() und handleDecrementBtn() beachten!  -->
+          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1">
+          <button type="button" class="decrementProductQuantity" disabled>-</button>
         </div>
       </div>
       
-      <input type="submit" value="Add to chart">
+      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn">
     {% endform %}
   </div>
 
@@ -70,9 +76,6 @@
 
   <!-- TODO: METATAGS für measurement values (für xs, small xl etc) wie einzelne größen ausfallen brustunmfang etc  -->
   <!-- ACHTUNG: zb cap und trinkflsche haben natürlch keine measurments.-tabelle -->
-
-
-
 <style>
   .select-wrapper::after {
     content: "";
@@ -88,9 +91,85 @@
 
 
 
+
+  
+
+
+
 <script>
-  const target = document.querySelector(".brand-name")
-  const targetRect = target.getBoundingClientRect()
-      const tagretY = targetRect.y
-      console.log("targetHeight: ", targetRect);
+  $(function() {
+
+    let quantityInput = $(".product-bg .quantityContainer .quantitySelect")
+    let incrementBtn = $(".incrementProductQuantity")
+    let decrementBtn = $(".decrementProductQuantity")
+
+    let addToChartBtn = $("add-to-chart-btn")
+
+    let currentSelectedVariant = $(".productSelect").find("option:selected")
+
+    if (quantityInput.val() > 1) {
+      incrementBtn.prop("disabled", false)
+
+    }
+
+    // TODO handle inventory for each variant (min and max product quantity input values)
+    incrementBtn.click(function() {
+      let inventory = currentSelectedVariant.data("variantInventory");
+      let quantitySum = parseInt(quantityInput.val(), 10)
+
+      quantitySum += 1
+      quantityInput.val(quantitySum)
+
+      handleIncrementBtn(quantitySum, inventory)
+      handleDecrementBtn(quantitySum)
+    })
+
+    decrementBtn.click(function() {
+      let inventory = currentSelectedVariant.data("variantInventory");
+      let quantitySum = parseInt(quantityInput.val(), 10)
+
+      quantitySum -= 1
+      quantityInput.val(quantitySum)
+      
+      handleIncrementBtn(quantitySum, inventory)
+      handleDecrementBtn(quantitySum)
+    })
+
+
+    $(document).on("change", ".productSelect" ,function() {
+      currentSelectedVariant = $(".productSelect").find("option:selected").first();
+      let inventory = currentSelectedVariant.data("variantInventory");
+      // console.log("inventory(" +inventory + ") for variant(" + currentSelectedVariant.text() +")");
+      // let quantitySum = parseInt(quantityInput.val(), 10)
+
+      // 1 default value von qunatityInput 
+      quantityInput.val(1)
+      handleDecrementBtn(1)
+      handleIncrementBtn(1, inventory)
+
+    })
+
+
+
+    // ----- qunatity helpers -----
+    function handleIncrementBtn(quantitySum, inventory) {
+
+      if (inventory === quantitySum) {
+        incrementBtn.prop("disabled", true)
+      } else {
+        incrementBtn.prop("disabled", false)
+      }
+    }
+
+
+    function handleDecrementBtn(quantitySum) {
+      if (quantitySum <= 1 ) {       // damit keine negativen werte decrementiert werden
+        decrementBtn.prop("disabled", true)
+      } else {
+        decrementBtn.prop("disabled", false)
+      }
+    } 
+
+
+  })
 </script>

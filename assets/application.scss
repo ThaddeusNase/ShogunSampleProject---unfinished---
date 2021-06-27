@@ -356,9 +356,9 @@ header {
 
 
 .image-selection-container {
-    position: absolute;
+    position: fixed;
     right: 20px;
-    bottom: 40px
+    bottom: 80px
 }
 
 .image-selection-selector {
@@ -514,8 +514,55 @@ input[type=number] {
 .product-bg .add-to-chart-btn:disabled {
     opacity: 0.4;
     cursor: default;          
-    
 } 
+
+.extra-information-container{
+    margin-top: 60px;
+}
+
+
+.extra-information-container h3 {
+    display: inline-block;
+    margin-right: 65px;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.extra-information-container h6 {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.measurements-table {
+    border: 1px solid white;
+    border-collapse: collapse;
+    // width: 350px;
+}
+
+.measurements-table tr {
+    border-bottom: 1px solid white;
+    // padding: 10px
+}
+
+
+// MARK: es kann kein padding für tr definiert werden!
+td {
+    padding: 10px; 
+    width: 180px
+  }
+  
+  td:first-child {
+    padding-left:10px;
+    padding-right:0;
+  }
+
+
+  .second-column {
+      padding-left: 20px;
+  }
+
+
 
 
 

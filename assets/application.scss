@@ -506,7 +506,7 @@ input[type=number] {
     transition: transform 200ms ease-out ;
 }
 
-.add-to-chart-btn:hover {
+.add-to-chart-btn:not([disabled]):hover {
     background-color: rgb(27, 27, 27);
     color: white;
     transform: scale(1.16);
@@ -514,6 +514,7 @@ input[type=number] {
 
 .add-to-chart-btn:disabled {
     opacity: 0.4;
+    cursor: default;            // TODO: not working
 } 
 
 

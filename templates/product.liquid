@@ -36,6 +36,7 @@
     {% form "product", product %}
 
     <!-- TODO: check if product/variant is in stock!! für produkte die keine varianten haben -->
+    <!-- TODO: security technisch eine gut idee, die inventory als data attribut zu speiechern? -->
     {% if product.variants.size > 1 %}
       <div class="variantContainer">
         <label for="productSelect">Size: </label>
@@ -54,6 +55,10 @@
           </select>
         </div>
       </div>
+
+    
+    
+
     {% endif %}
 
       <div class="quantityContainer">
@@ -61,7 +66,12 @@
         <div class="quantitySelectContainer">
           <button type="button" class="incrementProductQuantity">+</button>
           <!-- TODO: evenetuell noch mit max=10 ... dann aber auch handleIncrementBtn() und handleDecrementBtn() beachten!  -->
-          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1">
+          <!-- TODO: besser via lösen:  https://community.shopify.com/c/Shopify-Design/How-to-display-total-inventory/td-p/27964 -->
+          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1" 
+            {% if product.variants.size == 1 %}
+              data-max-inventory="{{ product.first_available_variant.inventory_quantity }}"
+            {% endif %}
+          >
           <button type="button" class="decrementProductQuantity" disabled>-</button>
         </div>
       </div>
@@ -103,18 +113,39 @@
     let incrementBtn = $(".incrementProductQuantity")
     let decrementBtn = $(".decrementProductQuantity")
 
-    let addToChartBtn = $("add-to-chart-btn")
+    let addToChartBtn = $(".add-to-chart-btn")
 
-    let currentSelectedVariant = $(".productSelect").find("option:selected")
+    let productSelect = $(".productSelect")
+    let currentSelectedVariant = productSelect.find("option:selected")
 
     if (quantityInput.val() > 1) {
       incrementBtn.prop("disabled", false)
-
     }
 
-    // TODO handle inventory for each variant (min and max product quantity input values)
+    if (getInventory() === 0) {
+      console.log("inventory = 0");
+      let quantitySum = parseInt(quantityInput.val(), 10)
+      let inventory = getInventory()
+
+      addToChartBtn.prop("disabled", true)
+      addToChartBtn.val("OUT OF STOCK")       // da addToChartBtn == input element -> kann nicht mit .text() geändert werden sondern mit val()
+      // TODO: !!!!!!!!!! eventuell komplett via liquid lösen, wenn prodcut.first_available_variant == false, dann impliziert es ja schon, dass generell keine varainten/produkte auf lager sind
+      handleDecrementBtn(quantitySum)
+      handleIncrementBtn(quantitySum, inventory)
+      // TODO: quantitySelect disabled + increment/decrement button
+    }
+
+
+    // TODO: check ob product überhaupt eine variante hat 
+    // -> wenn ja: inventory für vairante
+    // -> wenn nein: inventory für product bzw first available variant
     incrementBtn.click(function() {
-      let inventory = currentSelectedVariant.data("variantInventory");
+
+      // check ob productSelect existiert
+      // -> wenn ja: inventory von ausgewählte variant fetchen s. oben
+      // -> wenn nein: inventory nur von main product bzw main varaitn/only variant fetchen
+
+      let inventory = getInventory()
       let quantitySum = parseInt(quantityInput.val(), 10)
 
       quantitySum += 1
@@ -125,7 +156,7 @@
     })
 
     decrementBtn.click(function() {
-      let inventory = currentSelectedVariant.data("variantInventory");
+      let inventory = getInventory()
       let quantitySum = parseInt(quantityInput.val(), 10)
 
       quantitySum -= 1
@@ -138,7 +169,7 @@
 
     $(document).on("change", ".productSelect" ,function() {
       currentSelectedVariant = $(".productSelect").find("option:selected").first();
-      let inventory = currentSelectedVariant.data("variantInventory");
+      let inventory = getInventory()
       // console.log("inventory(" +inventory + ") for variant(" + currentSelectedVariant.text() +")");
       // let quantitySum = parseInt(quantityInput.val(), 10)
 
@@ -146,15 +177,30 @@
       quantityInput.val(1)
       handleDecrementBtn(1)
       handleIncrementBtn(1, inventory)
-
     })
 
 
 
-    // ----- qunatity helpers -----
-    function handleIncrementBtn(quantitySum, inventory) {
 
-      if (inventory === quantitySum) {
+
+
+    // ----- quantity helpers -----
+
+    function getInventory() {
+      let inventory = 0;
+      if (quantityInput.data("maxInventory")) {
+        console.log("qunatityInput.data != null");
+        inventory = quantityInput.data("maxInventory")  
+      } else if (currentSelectedVariant.data("variantInventory")){
+        inventory = currentSelectedVariant.data("variantInventory");
+      }
+      return inventory
+    }
+
+
+
+    function handleIncrementBtn(quantitySum, inventory) {
+      if (inventory === quantitySum || inventory < quantityInput) {
         incrementBtn.prop("disabled", true)
       } else {
         incrementBtn.prop("disabled", false)

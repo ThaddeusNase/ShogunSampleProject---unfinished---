@@ -487,14 +487,12 @@ input[type=number] {
 }
 
 
-.product-bg input[type="submit"] {
-    display: block;
-    cursor: pointer;
-    margin-top: 60px;
-}
 
 
 .add-to-chart-btn {
+    display: block;
+    cursor: pointer;
+    margin-top: 60px;
     background-color: white;
     width: 200px;
     height: 50px;
@@ -504,19 +502,20 @@ input[type=number] {
     font-weight: bolder;
     letter-spacing: 2px;
     transition: transform 200ms ease-out ;
+    padding: 0;
 }
 
-.add-to-chart-btn:not([disabled]):hover {
+.product-bg .add-to-chart-btn:not([disabled]):hover {
     background-color: rgb(27, 27, 27);
     color: white;
     transform: scale(1.16);
 }
 
-.add-to-chart-btn:disabled {
+.product-bg .add-to-chart-btn:disabled {
     opacity: 0.4;
-    cursor: default;            // TODO: not working
+    cursor: default;          
+    
 } 
-
 
 
 

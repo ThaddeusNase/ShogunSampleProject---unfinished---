@@ -55,10 +55,6 @@
           </select>
         </div>
       </div>
-
-    
-    
-
     {% endif %}
 
       <div class="quantityContainer">
@@ -67,7 +63,7 @@
           <button type="button" class="incrementProductQuantity">+</button>
           <!-- TODO: evenetuell noch mit max=10 ... dann aber auch handleIncrementBtn() und handleDecrementBtn() beachten!  -->
           <!-- TODO: besser via lösen:  https://community.shopify.com/c/Shopify-Design/How-to-display-total-inventory/td-p/27964 -->
-          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1" 
+          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1" max="1"
             {% if product.variants.size == 1 %}
               data-max-inventory="{{ product.first_available_variant.inventory_quantity }}"
             {% endif %}
@@ -128,11 +124,14 @@
       let inventory = getInventory()
 
       addToChartBtn.prop("disabled", true)
+      // addToChartBtn.addClass("disabled")
       addToChartBtn.val("OUT OF STOCK")       // da addToChartBtn == input element -> kann nicht mit .text() geändert werden sondern mit val()
-      // TODO: !!!!!!!!!! eventuell komplett via liquid lösen, wenn prodcut.first_available_variant == false, dann impliziert es ja schon, dass generell keine varainten/produkte auf lager sind
+      quantityInput.prop("disabled", true)
       handleDecrementBtn(quantitySum)
       handleIncrementBtn(quantitySum, inventory)
       // TODO: quantitySelect disabled + increment/decrement button
+    } else {
+      quantityInput.attr("max", getInventory())
     }
 
 
@@ -200,9 +199,11 @@
 
 
     function handleIncrementBtn(quantitySum, inventory) {
-      if (inventory === quantitySum || inventory < quantityInput) {
+      if (inventory === quantitySum || inventory < quantitySum) {
+        console.log("inventory < quantityInput");
         incrementBtn.prop("disabled", true)
       } else {
+        console.log("inventory >= quantityInput");
         incrementBtn.prop("disabled", false)
       }
     }

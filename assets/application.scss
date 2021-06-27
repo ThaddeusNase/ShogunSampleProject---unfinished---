@@ -3,6 +3,8 @@
 body {
     background-color: #1a212a;
     color: white;
+    margin: 0;
+    padding: 0;
 }
 
 main {
@@ -306,20 +308,17 @@ header {
 // TODO: content /children von product-bg soll nicht über header srollen!
 
 .product-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    //  height: 100vh;      /* TODO: höher als 100vh s. original website */
-    display: inline-block;
+    position: relative;     // position: relativ, damit image-selection-container->position:absolute im context von .product-bg seein kann
+    display: block;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     padding: 100px 80px;
+    margin-top: -80px ;
     //  TODO: content und form ohne scrollmagic scrollable machen irgendwie mit overflow ?!?!
     // s. https://stackoverflow.com/questions/27784727/how-to-make-child-div-scrollable-when-it-exceeds-parent-height
-    overflow-y: scroll;
+    // overflow-y: scroll;
     // TODO: background max-size einstellen, damit background image nicht so weird skaliert?!
     // z-index: 9;
 }
@@ -356,7 +355,7 @@ header {
 
 
 .image-selection-container {
-    position: fixed;
+    position: absolute;
     right: 20px;
     bottom: 80px
 }
@@ -560,6 +559,18 @@ td {
 
   .second-column {
       padding-left: 20px;
+  }
+
+
+
+
+
+//   ----- product-newsletter-section -----
+
+  .product-newsletter-section {
+    //   margin-top: 100vh;
+      height: 100vh;
+      background-color: transparent; // oder inherit von body
   }
 
 

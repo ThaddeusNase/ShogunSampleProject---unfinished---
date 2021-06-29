@@ -315,7 +315,7 @@ header {
     background-position: center;
     background-attachment: fixed;
     padding: 100px 80px;
-    margin-top: -80px ;
+    margin-top: -80px;
     //  TODO: content und form ohne scrollmagic scrollable machen irgendwie mit overflow ?!?!
     // s. https://stackoverflow.com/questions/27784727/how-to-make-child-div-scrollable-when-it-exceeds-parent-height
     // overflow-y: scroll;
@@ -570,8 +570,102 @@ td {
   .product-newsletter-section {
     //   margin-top: 100vh;
       height: 100vh;
+      position: relative;
       background-color: transparent; // oder inherit von body
+      text-align: center;
+      
   }
+
+  .newsletter-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+  }
+
+  .newsletter-heading {
+      font-size: 3rem;
+      margin-bottom: 25px;
+  }
+
+  .newsletter-subtitle {
+      margin-bottom: 25px;
+  }
+
+  .newsletter-additional-text {
+    margin-bottom: 25px;
+  }
+
+
+  // newsletter form
+
+  
+  .newsletter-email-form input[type="email"] {
+    border: none;
+    display: inline-block;
+    font-size: 1rem;
+    // padding: 15px 0px 15px 15px;
+    padding-left: 20px;
+    height: 45px;
+    width: 70%;
+    background-color: #000;
+    color: white 
+}
+
+
+.newsletter-email-form input[type="email"]:focus {
+    outline: none;
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+// .newsletter-email-form input[type="email"]:invalid {
+//     outline: none;
+//     border: 1px solid white;
+//     background-color: rgba(0, 0, 0, 0.5);
+// }
+
+
+  .email-permission-container {
+      position: relative;
+  }
+
+  .email-permission-container label {
+      display: inline-block;
+      width: 90%;
+      text-align: left;
+  }
+
+  .email-permission-container input[type="checkbox"] {
+      position: absolute;
+      top: 16px;
+      left: 0px;
+      display: inline-block;
+  }
+
+
+  .newsletter-email-form input[type="submit"] {
+      cursor: pointer;
+      margin-left: 20px;
+      border: none;
+      height: 45px;
+      text-align: center;
+      font-weight: bold;
+      width: 20%;
+  }
+
+  .newsletter-email-form input[type="submit"]:hover {
+      color: white;
+      background-color: black;
+  }
+
+
+
+
+
+
 
 
 

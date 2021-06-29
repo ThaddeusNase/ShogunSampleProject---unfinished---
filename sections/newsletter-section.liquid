@@ -1,0 +1,86 @@
+<div class="product-newsletter-section">
+    <!-- TODO: welche form genau: s. https://www.shopify.com/partners/blog/build-forms-on-shopify -->
+    <!-- email soll wenn möglich irgendwo gespeichert werden... am besten 3rd party app übergeben werden zB clickfunnels -->
+    <!-- // kann mit blocks und presets bestimmer ob man jeweilige section auf eine page anzeigen lassen will -->
+    <!-- == unterschied zwischen static und dynamic -->
+    <!-- also blocks nur verwenden um merchant möglichkeit zu geben, ob man section auf page integriert haben will -->
+    <div class="newsletter-content">
+        <h3 class="newsletter-heading"> {{ section.settings.newsletter-headline }} </h3>
+
+    <!-- TODO: block values werden noch nicht richtig angezeit -->
+        {% for block in section.blocks %}
+        
+            {% if block.settings.newsletter-subtitle != blank %}
+                <h4 class="newsletter-subtitle"> {{ block.settings.newsletter-subtitle }}</h4>
+            {% endif %}
+
+            {% if block.settings.newsletter-additional-text != blank %}
+                <p class="newsletter-additional-text"> {{ block.settings.newsletter-additional-text }}</p>
+            {% endif %}
+
+        {% endfor %}
+        <!--TODO:  keine form sondern mit ajax call zu bestimmte 3rd party app statt form?!  -->
+
+        <form class="newsletter-email-form" action="">
+            <input type="email" placeholder="Your email" name="email" required>
+            <input type="submit" value="SUBSCRIBE">
+
+            <div class="email-permission-container">
+                <input type="checkbox" id="email-subscription-permission" required>
+                <label for="email-subscription-permission">
+                    <p>{{ section.settings.newsletter-permission-text }}</p>
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- TODO: merchant die möglichkeit im customizer bieten, zu bestimmen für welches produkt der newsletter angehängt werden soll/kann -->
+<!-- s. settings == non-optional, blocks == optional  -->
+{% schema %}
+    {
+        "name": "Newsletter Section", 
+        "settings": [
+            {
+                "type": "text",
+                "id": "newsletter-headline",
+                "label": "Headline for the newsletter"
+            },
+            {
+                "type": "richtext",
+                "id": "newsletter-permission-text",
+                "label": "Permission-Description for the Customer-Email-Subscription"
+            }
+        ],
+        "blocks": [
+            {
+                "name": "Additional Informations",
+                "type": "additional-information",
+                "settings": [
+                    {
+                        "type": "richtext",
+                        "id": "newsletter-subtitle",
+                        "label": "Additional Subtitle (optional)"
+                    },
+                    {
+                        "type": "text",
+                        "id": "newsletter-additional-text",
+                        "label": "Additional Text Information (optional)"
+                    }
+                ]
+            }
+            
+
+        ],
+        "presets": [
+            {
+                "name": "Email-Newsletter",
+                "category": "Email"
+            }
+        ]
+    }
+
+
+{% endschema %}

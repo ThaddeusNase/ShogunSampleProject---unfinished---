@@ -33,9 +33,11 @@
     <!-- ALTERNATIV ZU FORM TAG: MANUELL <form action="/cart/add" method="post" accept-charset="UTF-8"> -->
     <!-- WICHTIG: name & value-ATTRIBUTES (s.option-tag) müssen mit liquid docs übereinstimmen, damit sie auch via querystring dem shopify endpoint erfolgreich übergeben werden können -->
     <!-- TODO: eventuell eher mit ajax calls arbeiten, da man mit foms sofort zur cart redirected wird -->
+
+
+    <!-- TODO: form.posted_successfully? property? Form error handeling bzw messages  -->
     {% form "product", product %}
 
-    <!-- TODO: check if product/variant is in stock!! für produkte die keine varianten haben -->
     <!-- TODO: security technisch eine gut idee, die inventory als data attribut zu speiechern? -->
     {% if product.variants.size > 1 %}
       <div class="variantContainer">
@@ -62,7 +64,6 @@
         <label for="quantitySelect">Quantity: </label>
         <div class="quantitySelectContainer">
           <button type="button" class="incrementProductQuantity">+</button>
-          <!-- TODO: evenetuell noch mit max=10 ... dann aber auch handleIncrementBtn() und handleDecrementBtn() beachten!  -->
           <!-- TODO: besser via lösen:  https://community.shopify.com/c/Shopify-Design/How-to-display-total-inventory/td-p/27964 -->
           <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1" max="1"
             {% if product.variants.size == 1 %}

@@ -601,7 +601,7 @@ td {
   // newsletter form
 
   
-  .newsletter-email-form input[type="email"] {
+  .newsletter-form input[type="email"] {
     border: none;
     display: inline-block;
     font-size: 1rem;
@@ -614,7 +614,7 @@ td {
 }
 
 
-.newsletter-email-form input[type="email"]:focus {
+.newsletter-form input[type="email"]:focus {
     outline: none;
     border: 1px solid white;
     background-color: rgba(0, 0, 0, 0.5);
@@ -628,17 +628,17 @@ td {
 // }
 
 
-  .email-permission-container {
+  .email-permission-group {
       position: relative;
   }
 
-  .email-permission-container label {
+  .email-permission-group label {
       display: inline-block;
       width: 90%;
       text-align: left;
   }
 
-  .email-permission-container input[type="checkbox"] {
+  .email-permission-group input[type="checkbox"] {
       position: absolute;
       top: 16px;
       left: 0px;
@@ -646,7 +646,7 @@ td {
   }
 
 
-  .newsletter-email-form input[type="submit"] {
+  .newsletter-form input[type="submit"] {
       cursor: pointer;
       margin-left: 20px;
       border: none;
@@ -656,7 +656,7 @@ td {
       width: 20%;
   }
 
-  .newsletter-email-form input[type="submit"]:hover {
+  .newsletter-form input[type="submit"]:hover {
       color: white;
       background-color: black;
   }

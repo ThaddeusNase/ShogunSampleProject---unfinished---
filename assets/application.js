@@ -111,6 +111,13 @@ rigthCarouselBtn.addEventListener("click", moveRight)
 
 
 // --------- product-page image-selector background handeling ---------
+// TODO: refactoren: 
+// -> PROBLEM: code der in application.js ausgeführt wird, wird immer ausgeführt! d.h. 
+// wenn wir hier code bezogen auf product.liquid ausführen, aber der user soch auf der index.liquid page befindet
+// wird der nachfolgeende code trotzdem ausgführt, s. line 119 const imageSelectors = document.querySelectorAll(".image-selection-selector") 
+// und line 126: latestClickedSelector.classList.add("active-selector")
+// daher checken ob diese selektoren überhaupt existieren
+
 const imageSelectors = document.querySelectorAll(".image-selection-selector")
 const productPageBg = document.querySelector(".product-bg")
 
@@ -118,17 +125,19 @@ const productPageBg = document.querySelector(".product-bg")
 let latestClickedSelector = imageSelectors[0]
 
 // Default background settings (wenn product-page zum ersteln mal aufgerufen wird)
-latestClickedSelector.classList.add("active-selector")
-productPageBg.style.backgroundImage = `url('${latestClickedSelector.dataset.bgurl}')`
+if (imageSelectors !== undefined && productPageBg !== undefined && imageSelectors.length !== 0) {
+    console.log(imageSelectors);
+    latestClickedSelector.classList.add("active-selector")
+    productPageBg.style.backgroundImage = `url('${latestClickedSelector.dataset.bgurl}')`
 
-
-imageSelectors.forEach((imgSelector) => {
-    imgSelector.addEventListener("click", function() {
-        const bgUrl = imgSelector.dataset.bgurl
-        productPageBg.style.backgroundImage = `url('${bgUrl}')`
-        handleSwitchSelector(imgSelector)
+    imageSelectors.forEach((imgSelector) => {
+        imgSelector.addEventListener("click", function() {
+            const bgUrl = imgSelector.dataset.bgurl
+            productPageBg.style.backgroundImage = `url('${bgUrl}')`
+            handleSwitchSelector(imgSelector)
+        })
     })
-})
+}
 
 function handleSwitchSelector(imgSelector) {
     latestClickedSelector.classList.remove("active-selector")

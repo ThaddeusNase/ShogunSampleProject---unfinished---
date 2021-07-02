@@ -20,8 +20,10 @@
 
         {% endfor %}
         <!--TODO:  keine form sondern mit ajax call zu bestimmte 3rd party app statt form?!  -->
+        <!-- TODO: name="contact[...]" fehlt für input eelements, ENDPOINT BZW ation fehlt auch -->
 
-        <form class="newsletter-email-form" action="">
+
+        <!-- <form class="newsletter-email-form">
             <input type="email" placeholder="Your email" name="email" required>
             <input type="submit" value="SUBSCRIBE">
 
@@ -31,9 +33,69 @@
                     <p>{{ section.settings.newsletter-permission-text }}</p>
                 </label>
             </div>
-        </form>
+        </form> -->
+
+
+        <!-- TODO: s. placeholder und subscribe values nicht hardcoden, sondern via 'general.newsletter_form.email_placeholder' | t  -> externe sprach/locales datei -->
+        {% assign formId ="Contract_" | append: section.id %}
+        {% form "customer", class: "newsletter-form" %}
+            {% if form.posted_successfully? %}
+                <!-- wird ausgeführt, wenn user erfolgreich capture submitted hat (s. url-querystring): ?customer_posted=true -->
+                <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                    <!-- TODO: content ändern bzw.: hat unser template zugriff auf general.newsletter_form.confirmation  ?  -->
+                    <!-- 'general.newsletter_form.confirmation' | t -->
+                    Thanks for subscribing to our newsletter
+                </p>
+            {% else %}
+                <!-- form contains errors: form validators triggered -->
+                <!-- TODO: forms post vs get method -->
+                <!-- https://www.youtube.com/watch?v=fNcJuPIZ2WE -->
+
+            {% endif %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="input-group {% if form.errors %} input-group--error  {% endif %}">
+                <!-- TODO: unterschied zwischen contact-form und email-form??? -->
+                <input type="email"
+                    name="contact[email]"
+                    id="{{ formId }}-email"
+                    class="input-group__field{% if form.errors %} input--error{% endif %}"
+                    value="{{ form.email }}"
+                    placeholder="Your Email here"
+                    aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                    aria-required="true"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    {% if form.errors %}
+                        aria-invalid="true"
+                        aria-describedby="{{ formId }}-email-error"
+                        data-form-status
+                    {% endif %}
+                >
+                <input type="submit" value="SUBSCRIBE">
+            </div>
+
+            <div class="input-group email-permission-group">
+                <input type="checkbox" id="email-subscription-permission" required>
+                <label for="email-subscription-permission">
+                    <p>{{ section.settings.newsletter-permission-text }}</p>
+                </label>
+            </div>
+            
+            <!-- {%- if form.errors contains 'email' -%}
+                <span id="{{ formId }}-email-error" class="input-error-message">
+                <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                {% include 'icon-error' %}
+                <span>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                </span>
+            {%- endif -%} -->
+
+        {% endform %} 
+
     </div>
 </div>
+
+
+
 
 
 

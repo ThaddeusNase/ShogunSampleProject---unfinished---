@@ -37,7 +37,8 @@
 
 
         <!-- TODO: s. placeholder und subscribe values nicht hardcoden, sondern via 'general.newsletter_form.email_placeholder' | t  -> externe sprach/locales datei -->
-        {% assign formId ="Contract_" | append: section.id %}
+        {% assign formId ="Contact_" | append: section.id %}
+        <!-- <form action=""></form> -->
         {% form "customer", class: "newsletter-form" %}
             {% if form.posted_successfully? %}
                 <!-- wird ausgeführt, wenn user erfolgreich capture submitted hat (s. url-querystring): ?customer_posted=true -->

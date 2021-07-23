@@ -8,7 +8,7 @@
     <div class="product-content">
       <h1 class="product-title"> {{ product.title }} </h1>
       <h4 class="product-price"> {{ product.price | money }} </h4>
-      <div class="product-description"> {{ product.description }} </div>
+      <div class="product-description"> LOLOLOLOLOOL {{ product.description }} </div>
     </div>
 
     <div class="seperator"></div>
@@ -33,7 +33,7 @@
     <!-- ALTERNATIV ZU FORM TAG: MANUELL <form action="/cart/add" method="post" accept-charset="UTF-8"> -->
     <!-- WICHTIG: name & value-ATTRIBUTES (s.option-tag) müssen mit liquid docs übereinstimmen, damit sie auch via querystring dem shopify endpoint erfolgreich übergeben werden können -->
     <!-- TODO: eventuell eher mit ajax calls arbeiten, da man mit foms sofort zur cart redirected wird -->
-
+FROM NEWSLETTER SECTION
 
     <!-- TODO: form.posted_successfully? property? Form error handeling bzw messages  -->
     {% form "product", product %}
@@ -134,6 +134,52 @@
 
 <script>
   $(function() {
+
+
+    // post rewuest zum flask backend versuchen mit user-Id?
+    // https://ionicudemyapp-default-rtdb.europe-west1.firebasedatabase.app/daten.json
+
+
+  // $.ajax({
+  //   url: "https://instafirebase-20710.firebaseio.com/likes.json",
+  //   type: "POST",
+  //   crossDomain: true,
+  //   dataType: "json",
+  //   data: {
+  //     content:
+  //     {
+  //       desc:"This is the new thought",
+  //       img:"imgn.png"
+  //     },
+  //     title:"new title"
+  //   }, // Data sent to server, a set of key/value pairs (i.e. form       fields and values)
+  //   success: function(data){   // A function to be called if request succeeds
+  //     this.setState({thought: data});
+  //   }.bind(this)
+  // });
+  $.post("http://127.0.0.1:5000/register_user ",
+   {
+     email: "shopifytestmail@gmail.com",
+     password: "lmaoooooo"
+  }, function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+  });
+
+
+    // TEST!!!!!
+    var pokeApiUrl = "https://pokeapi.co/api/v2/generation/1"
+  
+    $.getJSON(pokeApiUrl).done(function(data) {
+      console.log(data);
+      // data.pokemon_species.forEach(pokemon => {
+      //   console.log(pokemon);
+      //   // $("#poke").append(`<p> ${pokemon.name} </p>`)
+      // });
+    }).fail(function() {
+      alert("request failed")
+    }).always(function() {
+      console.log("wird immer ausgeführt");
+    })
 
     let quantityInput = $(".product-bg .quantityContainer .quantitySelect")
     let incrementBtn = $(".incrementProductQuantity")

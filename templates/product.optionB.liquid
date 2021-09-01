@@ -4,7 +4,8 @@ d<!-- {% assign current_variant = product.selected_or_first_available_variant %}
 
 <!-- eventuell auch mit scrollmagic arbeiten, sectionon soll  -->
 
-  <div class="product-bg">
+------lollll
+<div class="product-bg">
     <div class="product-content">
       <h1 class="product-title"> {{ product.title }} </h1>
       <h4 class="product-price"> {{ product.price | money }} </h4>
@@ -98,6 +99,12 @@ d<!-- {% assign current_variant = product.selected_or_first_available_variant %}
     {% endif %}
   </div>
 
+  <div class="bewertungen">
+    <h1>Bewertungen: </h1>
+    <div class="bewertung"> "A+ Very Good" - From Max Mustermann </div>
+    <div class="bewertung"> "C It's ok" - From Tim Lol </div>
+</div>
+
 
   <!-- TODO: wie section und template-customizer text customizable machen! s. json schema -->
   <!-- shopowner die möglichkeit bieten, ob man product-email-newsletter überhaupt auf productpage haben will -->
@@ -125,6 +132,18 @@ d<!-- {% assign current_variant = product.selected_or_first_available_variant %}
     position: absolute;
     pointer-events: none;
   }
+
+  .bewertungen {
+      background-color: aqua;
+  }
+
+  .bewertung {
+      border: 1px solid black;
+      width: 80%;
+      margin: 10px 0
+  }
+
+
 </style>
 
 

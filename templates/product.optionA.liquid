@@ -1,0 +1,254 @@
+<!-- {% assign current_variant = product.selected_or_first_available_variant %} -->
+<!-- {% assign featured_image = current_variant.featured_image | default: product.featured_image %} -->
+<!-- <img src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">  -->
+
+<!-- eventuell auch mit scrollmagic arbeiten, sectionon soll  -->
+
+  <div class="product-bg">
+    <div class="product-content">
+      <h1 class="product-title"> {{ product.title }} </h1>
+      <h4 class="product-price"> {{ product.price | money }} </h4>
+      <div class="product-description"> {{ product.description }} </div>
+    </div>
+
+    <div class="seperator"></div>
+
+    <div class="image-selection-container">
+      {% for image in product.images %}
+        {% assign imageSrcSmall = image | img_url: '100x' %}
+        {% assign imageSrcLarge = image | img_url: "large" %}
+        <div class="image-selection-selector" style="background-image: url('{{ imageSrcSmall }}')" data-bgurl="{{ imageSrcLarge }}" ></div>
+      {% endfor %}
+    </div>
+
+
+
+
+
+    <!-- TODO: 	s. CHEST TO FIT via metatags1!!! -->
+
+    <!-- https://shopify.dev/docs/themes/theme-templates/product-liquid: product variant muss beim submit übergeben werden, quantity = optional  -->
+    <!-- url .../car/add?id=999999999 == post form request = url wird von shopify backend abgefangen und fügt dann den entsprechenden artikel/variante mit der id zur cart -->
+
+    <!-- ALTERNATIV ZU FORM TAG: MANUELL <form action="/cart/add" method="post" accept-charset="UTF-8"> -->
+    <!-- WICHTIG: name & value-ATTRIBUTES (s.option-tag) müssen mit liquid docs übereinstimmen, damit sie auch via querystring dem shopify endpoint erfolgreich übergeben werden können -->
+    <!-- TODO: eventuell eher mit ajax calls arbeiten, da man mit foms sofort zur cart redirected wird -->
+    {% form "product", product %}
+
+    <!-- TODO: check if product/variant is in stock!! für produkte die keine varianten haben -->
+    <!-- TODO: security technisch eine gut idee, die inventory als data attribut zu speiechern? -->
+    {% if product.variants.size > 1 %}
+      <div class="variantContainer">
+        <label for="productSelect">Size: </label>
+        <div class="select-wrapper">
+          <select name="id" class="productSelect" id="productSelect">
+              {% for variant in product.variants %}
+                <option 
+                  data-variant-inventory="{{ variant.inventory_quantity }}" 
+                  data-variant-measurement="{{ variant.metafields.measurement.chest_to_fit }}"
+                  {% if variant == product.selected_or_first_available_variant %} selected {% endif %} 
+                  {% if variant.available == blank %} disabled {% endif %} 
+                  value="{{ variant.id }}"
+                >
+                  {{ variant.title }} {% if variant.available == blank %} - sold out {% endif %}
+                </option>
+              {% endfor %}    
+          </select>
+        </div>
+      </div>
+    {% endif %}
+
+      <div class="quantityContainer">
+        <label for="quantitySelect">Quantity: </label>
+        <div class="quantitySelectContainer">
+          <button type="button" class="incrementProductQuantity">+</button>
+          <!-- TODO: evenetuell noch mit max=10 ... dann aber auch handleIncrementBtn() und handleDecrementBtn() beachten!  -->
+          <!-- TODO: besser via lösen:  https://community.shopify.com/c/Shopify-Design/How-to-display-total-inventory/td-p/27964 -->
+          <input class="quantitySelect" id="quantitySelect" type="number" name="quantity" value="1" min="1" max="1"
+            {% if product.variants.size == 1 %}
+              data-max-inventory="{{ product.first_available_variant.inventory_quantity }}"
+            {% endif %}
+          >
+          <button type="button" class="decrementProductQuantity" disabled>-</button>
+        </div>
+      </div>
+      
+      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn">
+    {% endform %}
+
+
+<!-- TODO: eventuell mit "switch case" oder mit mehreren if statements die jweiligen unterschiedlcihen metafields bzw varinaten bzw product terminieren" -->
+    {% if product.variants.size  > 1 %}
+      <div class="extra-information-container">
+        <!-- TODO: dynamischer ohne das metafiled name gehardcoded ist! -->
+        <h3> UNISEX </h3>
+        <h6> CHEST TO FIT </h6>
+        <table class="measurements-table" >
+            <!-- TODO: jenachdem on wie fern wir noch weitere varianten zu anderen produkten hinzufügen wollen, muss html-struktur /td-tag mit individuellen metafileds) nochmal überarbietet werden -->
+            {% for variant in product.variants %}
+              <tr>
+                <td> <strong>{{ variant.title }}</strong>  </td> 
+                <!-- <td>  TODO: tag (o.ä) für jede variante hinzufügen, (s. shogun website: abkürzung und ausgeschrieben) </td> -->
+                <td class="second-column"> {{ variant.metafields.measurement.chest_to_fit }} </td>
+              </tr>
+            {% endfor %}
+        </table>
+
+      </div>
+    {% endif %}
+  </div>
+
+
+  <!-- TODO: wie section und template-customizer text customizable machen! s. json schema -->
+  <!-- shopowner die möglichkeit bieten, ob man product-email-newsletter überhaupt auf productpage haben will -->
+  <!-- TODO: submit form -> email newsletter: anbindung an 3rd party app wiee click funnels etc? -->
+  <div class="product-newsletter-section">
+
+
+
+  </div>
+
+
+
+
+
+  <!-- TODO: METATAGS für measurement values (für xs, small xl etc) wie einzelne größen ausfallen brustunmfang etc  -->
+  <!-- ACHTUNG: zb cap und trinkflsche haben natürlch keine measurments.-tabelle -->
+<style>
+  .select-wrapper::after {
+    content: "";
+    background-image: url("{{ 'chevron-down-outline.svg' | asset_url }}");
+    height: 20px;
+    width: 20px;
+    top: 8px;
+    right: 8px;
+    position: absolute;
+    pointer-events: none;
+  }
+</style>
+
+
+
+
+  
+
+
+
+<script>
+  $(function() {
+
+    let quantityInput = $(".product-bg .quantityContainer .quantitySelect")
+    let incrementBtn = $(".incrementProductQuantity")
+    let decrementBtn = $(".decrementProductQuantity")
+
+    let addToChartBtn = $(".add-to-chart-btn")
+
+    let productSelect = $(".productSelect")
+    let currentSelectedVariant = productSelect.find("option:selected")
+
+    if (quantityInput.val() > 1) {
+      incrementBtn.prop("disabled", false)
+    }
+
+    if (getInventory() === 0) {
+      console.log("inventory = 0");
+      let quantitySum = parseInt(quantityInput.val(), 10)
+      let inventory = getInventory()
+
+      addToChartBtn.prop("disabled", true)
+      // addToChartBtn.addClass("disabled")
+      addToChartBtn.val("OUT OF STOCK")       // da addToChartBtn == input element -> kann nicht mit .text() geändert werden sondern mit val()
+      quantityInput.prop("disabled", true)
+      handleDecrementBtn(quantitySum)
+      handleIncrementBtn(quantitySum, inventory)
+      // TODO: quantitySelect disabled + increment/decrement button
+    } else {
+      quantityInput.attr("max", getInventory())
+    }
+
+
+    // TODO: check ob product überhaupt eine variante hat 
+    // -> wenn ja: inventory für vairante
+    // -> wenn nein: inventory für product bzw first available variant
+    incrementBtn.click(function() {
+
+      // check ob productSelect existiert
+      // -> wenn ja: inventory von ausgewählte variant fetchen s. oben
+      // -> wenn nein: inventory nur von main product bzw main varaitn/only variant fetchen
+
+      let inventory = getInventory()
+      let quantitySum = parseInt(quantityInput.val(), 10)
+
+      quantitySum += 1
+      quantityInput.val(quantitySum)
+
+      handleIncrementBtn(quantitySum, inventory)
+      handleDecrementBtn(quantitySum)
+    })
+
+    decrementBtn.click(function() {
+      let inventory = getInventory()
+      let quantitySum = parseInt(quantityInput.val(), 10)
+
+      quantitySum -= 1
+      quantityInput.val(quantitySum)
+      
+      handleIncrementBtn(quantitySum, inventory)
+      handleDecrementBtn(quantitySum)
+    })
+
+
+    $(document).on("change", ".productSelect" ,function() {
+      currentSelectedVariant = $(".productSelect").find("option:selected").first();
+      let inventory = getInventory()
+      // console.log("inventory(" +inventory + ") for variant(" + currentSelectedVariant.text() +")");
+      // let quantitySum = parseInt(quantityInput.val(), 10)
+
+      // 1 default value von qunatityInput 
+      quantityInput.val(1)
+      handleDecrementBtn(1)
+      handleIncrementBtn(1, inventory)
+    })
+
+
+
+
+
+
+    // ----- quantity helpers -----
+
+    function getInventory() {
+      let inventory = 0;
+      if (quantityInput.data("maxInventory")) {
+        console.log("qunatityInput.data != null");
+        inventory = quantityInput.data("maxInventory")  
+      } else if (currentSelectedVariant.data("variantInventory")){
+        inventory = currentSelectedVariant.data("variantInventory");
+      }
+      return inventory
+    }
+
+
+
+    function handleIncrementBtn(quantitySum, inventory) {
+      if (inventory === quantitySum || inventory < quantitySum) {
+        console.log("inventory < quantityInput");
+        incrementBtn.prop("disabled", true)
+      } else {
+        console.log("inventory >= quantityInput");
+        incrementBtn.prop("disabled", false)
+      }
+    }
+
+
+    function handleDecrementBtn(quantitySum) {
+      if (quantitySum <= 1 ) {       // damit keine negativen werte decrementiert werden
+        decrementBtn.prop("disabled", true)
+      } else {
+        decrementBtn.prop("disabled", false)
+      }
+    } 
+
+
+  })
+</script>

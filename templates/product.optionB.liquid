@@ -70,11 +70,11 @@ d<!-- {% assign current_variant = product.selected_or_first_available_variant %}
               data-max-inventory="{{ product.first_available_variant.inventory_quantity }}"
             {% endif %}
           >
-          <button type="button" class="decrementProductQuantity" style="background-color: red;" disabled>-</button>
+          <button type="button" class="decrementProductQuantity"  disabled>-</button>
         </div>
       </div>
       
-      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn">
+      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn" style="background-color: red;" > 
     {% endform %}
 
 

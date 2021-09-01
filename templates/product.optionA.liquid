@@ -4,7 +4,7 @@
 
 <!-- eventuell auch mit scrollmagic arbeiten, sectionon soll  -->
 
-  <div class="product-bg">
+<div class="product-bg">
     <div class="product-content">
       <h1 class="product-title"> {{ product.title }} </h1>
       <h4 class="product-price"> {{ product.price | money }} </h4>
@@ -73,7 +73,7 @@
         </div>
       </div>
       
-      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn">
+      <input type="submit" value="ADD TO BAG" class="add-to-chart-btn" onclick="_gaü">
     {% endform %}
 
 
@@ -99,12 +99,12 @@
   </div>
 
 
+  
+
   <!-- TODO: wie section und template-customizer text customizable machen! s. json schema -->
   <!-- shopowner die möglichkeit bieten, ob man product-email-newsletter überhaupt auf productpage haben will -->
   <!-- TODO: submit form -> email newsletter: anbindung an 3rd party app wiee click funnels etc? -->
   <div class="product-newsletter-section">
-
-
 
   </div>
 
@@ -125,6 +125,7 @@
     position: absolute;
     pointer-events: none;
   }
+
 </style>
 
 

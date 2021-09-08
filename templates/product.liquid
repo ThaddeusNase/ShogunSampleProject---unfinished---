@@ -78,25 +78,7 @@
 
 
 <!-- TODO: eventuell mit "switch case" oder mit mehreren if statements die jweiligen unterschiedlcihen metafields bzw varinaten bzw product terminieren" -->
-    <!-- {% if product.variants.size  > 1 %}
-      <div class="extra-information-container">
-        <!-- TODO: dynamischer ohne das metafiled name gehardcoded ist! -->
-        <h3> UNISEX </h3>
-        <h6> CHEST TO FIT </h6>
-        <table class="measurements-table" >
-            <!-- TODO: jenachdem on wie fern wir noch weitere varianten zu anderen produkten hinzufügen wollen, muss html-struktur /td-tag mit individuellen metafileds) nochmal überarbietet werden -->
-            {% for variant in product.variants %}
-              <tr>
-                <td> <strong>{{ variant.title }}</strong>  </td> 
-                <!-- <td>  TODO: tag (o.ä) für jede variante hinzufügen, (s. shogun website: abkürzung und ausgeschrieben) </td> -->
-                <td class="second-column"> {{ variant.metafields.measurement.chest_to_fit }} </td>
-              </tr>
-            {% endfor %}
-        </table>
-
-      </div>
-    {% endif %} -->
-  </div>
+    
 
 
   <!-- TODO: wie section und template-customizer text customizable machen! s. json schema -->
